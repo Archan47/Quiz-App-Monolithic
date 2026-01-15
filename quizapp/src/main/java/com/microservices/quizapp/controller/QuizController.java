@@ -1,7 +1,7 @@
 package com.microservices.quizapp.controller;
 
 
-import com.microservices.quizapp.Question;
+import com.microservices.quizapp.entity.Question;
 import com.microservices.quizapp.services.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -1,6 +1,6 @@
 package com.microservices.quizapp.services;
 
-import com.microservices.quizapp.Question;
+import com.microservices.quizapp.entity.Question;
 import com.microservices.quizapp.dao.QuestionDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,4 +32,9 @@ public class QuestionService {
         return questionDao.findByCategoryAndDifficultyLevel(category,difficultyLevel);
     }
 
+    // add question (Admin)
+    public String addQuestion(Question question) {
+        questionDao.save(question);
+        return "success";
+    }
 }

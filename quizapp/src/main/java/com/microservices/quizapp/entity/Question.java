@@ -1,4 +1,4 @@
-package com.microservices.quizapp;
+package com.microservices.quizapp.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
