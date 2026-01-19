@@ -5,14 +5,13 @@ import com.microservices.quizapp.dao.QuizDao;
 import com.microservices.quizapp.entity.Question;
 import com.microservices.quizapp.entity.QuestionWrapper;
 import com.microservices.quizapp.entity.Quiz;
+import com.microservices.quizapp.entity.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class QuizService {
@@ -51,4 +50,32 @@ public class QuizService {
 
         return new ResponseEntity<>(questionsForUser,HttpStatus.OK);
     }
+
+    public ResponseEntity<Integer> calculateResult(Integer id, List<Response> responses) {
+
+        Quiz quiz = quizDao.findById(id)
+                .orElseThrow(() -> new RuntimeException("Quiz not found"));
+
+        List<Question> questions = quiz.getQuestions();
+
+        // Convert questions to Map<questionId, Question>
+        Map<Integer, Question> questionMap = new HashMap<>();
+        for (Question q : questions) {
+            questionMap.put(q.getId(), q);
+        }
+
+        int rightAns = 0;
+
+        for (Response response : responses) {
+            Question question = questionMap.get(response.getId());
+
+            if (question != null &&
+                    response.getResponse().equalsIgnoreCase(question.getRightAnswer())) {
+                rightAns++;
+            }
+        }
+
+        return new ResponseEntity<>(rightAns, HttpStatus.OK);
+    }
+
 }
